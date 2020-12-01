@@ -4,11 +4,12 @@ using DotNetCoreMVCRestApi.Models;
 using DotNetCoreMVCRestApi.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DotNetCoreMVCRestApi.Controllers
 {
-    [ApiController]
     [Route("api/cars")]
+    [ApiController]
     public class CarsController : ControllerBase
     {
         private readonly ICarRepository _repository;
@@ -22,9 +23,9 @@ namespace DotNetCoreMVCRestApi.Controllers
 
         // GET api/cars
         [HttpGet]
-        public ActionResult<List<CarReadDto>> GetAllCars()
+        public async Task <ActionResult<List<CarReadDto>>> GetAllCars()
         {
-            var cars = _repository.GetAllCars();
+            var cars = await _repository.GetAllCarsAsync();
 
             if (cars == null)
             {
@@ -36,9 +37,9 @@ namespace DotNetCoreMVCRestApi.Controllers
 
         // GET api/cars/{id}
         [HttpGet("{id}", Name = "GetCarById")]
-        public ActionResult<CarReadDto> GetCarById(int id)
+        public async Task <ActionResult<CarReadDto>> GetCarById(int id)
         {
-            var car = _repository.GetCarById(id);
+            var car = await _repository.GetCarByIdAsync(id);
 
             if (car == null)
             {
@@ -50,14 +51,14 @@ namespace DotNetCoreMVCRestApi.Controllers
 
         // POST api/cars
         [HttpPost]
-        public ActionResult<CarReadDto> CreateCar([Bind("Make,Model,Year,Color,VIN")] CarCreateDto carCreateDto)
+        public async Task<ActionResult<CarReadDto>> CreateCarAsync([Bind("Make,Model,Year,Color,VIN")] CarCreateDto carCreateDto)
         {
             if (ModelState.IsValid)
             {
                 var carModel = _mapper.Map<Car>(carCreateDto);
 
-                _repository.CreateCar(carModel);
-                _repository.SaveChanges();
+                await _repository.CreateCarAsync(carModel);
+                await _repository.SaveChangesAsync();
 
                 var carReadDto = _mapper.Map<CarReadDto>(carModel);
 

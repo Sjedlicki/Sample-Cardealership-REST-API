@@ -1,14 +1,15 @@
 ﻿using DotNetCoreMVCRestApi.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DotNetCoreMVCRestApi.Data
 {
     public interface ICarRepository
     {
-        bool SaveChanges();
+        Task<bool> SaveChangesAsync();
 
-        void CreateCar(Car car); //Create
-        List<Car> GetAllCars(); // Read
-        Car GetCarById(int id); // Read
+        Task CreateCarAsync(Car car); //Create
+        Task<List<Car>> GetAllCarsAsync(); // Read
+        Task<Car> GetCarByIdAsync(int id); // Read
     }
 }

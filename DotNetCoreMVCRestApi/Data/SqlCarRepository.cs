@@ -1,7 +1,9 @@
 ﻿using DotNetCoreMVCRestApi.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DotNetCoreMVCRestApi.Data
 {
@@ -14,34 +16,34 @@ namespace DotNetCoreMVCRestApi.Data
             _context = context;
         }
 
-        public void CreateCar(Car car)
+        public async Task CreateCarAsync(Car car)
         {
             if(car == null)
             {
                 throw new ArgumentNullException(nameof(car));
             }
 
-            _context.Car.Add(car);
+            await _context.Car.AddAsync(car);
 
         }
 
-        public List<Car> GetAllCars()
+        public async Task <List<Car>> GetAllCarsAsync()
         {
-            var cars = _context.Car.ToList();
+            var cars = await _context.Car.ToListAsync();
 
             return cars;
         }
 
-        public Car GetCarById(int id)
+        public async Task <Car> GetCarByIdAsync(int id)
         {
-            var car = _context.Car.FirstOrDefault(car => car.Id == id);
+            var car = await _context.Car.FirstOrDefaultAsync(car => car.Id == id);
 
             return car;
         }
 
-        public bool SaveChanges()
+        public async Task<bool> SaveChangesAsync()
         {
-           return  (_context.SaveChanges() >= 0);
+           return  (await _context.SaveChangesAsync() >= 0);
         }
     }
 }
