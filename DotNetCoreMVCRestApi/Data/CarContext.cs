@@ -10,6 +10,6 @@ namespace DotNetCoreMVCRestApi.Data
 
         }
 
-        public DbSet<Car> Cars { get; set; }
+        public DbSet<Car> Car { get; set; }
     }
 }

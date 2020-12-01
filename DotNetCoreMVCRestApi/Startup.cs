@@ -31,7 +31,7 @@ namespace DotNetCoreMVCRestApi
             // AddScoped - Created once per client request.
             // AddTransient - New instance created every time.
 
-            services.AddScoped<ICarRepository, MockCarRepository>();
+            services.AddScoped<ICarRepository, SqlCarRepository>();
 
             services.AddControllers();
 
