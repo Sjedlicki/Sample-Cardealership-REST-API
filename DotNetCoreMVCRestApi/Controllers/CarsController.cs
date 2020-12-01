@@ -23,7 +23,7 @@ namespace DotNetCoreMVCRestApi.Controllers
 
         // GET api/cars
         [HttpGet]
-        public async Task <ActionResult<List<CarReadDto>>> GetAllCars()
+        public async Task <ActionResult<List<CarReadDto>>> GetAllCarsAsync()
         {
             var cars = await _repository.GetAllCarsAsync();
 
@@ -37,7 +37,7 @@ namespace DotNetCoreMVCRestApi.Controllers
 
         // GET api/cars/{id}
         [HttpGet("{id}", Name = "GetCarById")]
-        public async Task <ActionResult<CarReadDto>> GetCarById(int id)
+        public async Task <ActionResult<CarReadDto>> GetCarByIdAsync(int id)
         {
             var car = await _repository.GetCarByIdAsync(id);
 
@@ -62,7 +62,7 @@ namespace DotNetCoreMVCRestApi.Controllers
 
                 var carReadDto = _mapper.Map<CarReadDto>(carModel);
 
-                return CreatedAtRoute(nameof(GetCarById), new { Id = carReadDto.Id } ,carReadDto);
+                return CreatedAtRoute(nameof(GetCarByIdAsync), new { Id = carReadDto.Id } ,carReadDto);
             }
 
             return BadRequest();
