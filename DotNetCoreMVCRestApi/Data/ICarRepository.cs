@@ -7,9 +7,9 @@ namespace DotNetCoreMVCRestApi.Data
     public interface ICarRepository
     {
         Task<bool> SaveChangesAsync();
-
         Task CreateCarAsync(Car car); //Create
         Task<List<Car>> GetAllCarsAsync(); // Read
         Task<Car> GetCarByIdAsync(int id); // Read
+        Task UpdateCarAsync(Car car); // Update
     }
 }

@@ -18,7 +18,7 @@ namespace DotNetCoreMVCRestApi.Data
 
         public async Task CreateCarAsync(Car car)
         {
-            if(car == null)
+            if (car == null)
             {
                 throw new ArgumentNullException(nameof(car));
             }
@@ -27,14 +27,14 @@ namespace DotNetCoreMVCRestApi.Data
 
         }
 
-        public async Task <List<Car>> GetAllCarsAsync()
+        public async Task<List<Car>> GetAllCarsAsync()
         {
             var cars = await _context.Car.ToListAsync();
 
             return cars;
         }
 
-        public async Task <Car> GetCarByIdAsync(int id)
+        public async Task<Car> GetCarByIdAsync(int id)
         {
             var car = await _context.Car.FirstOrDefaultAsync(car => car.Id == id);
 
@@ -43,7 +43,12 @@ namespace DotNetCoreMVCRestApi.Data
 
         public async Task<bool> SaveChangesAsync()
         {
-           return  (await _context.SaveChangesAsync() >= 0);
+            return (await _context.SaveChangesAsync() >= 0);
+        }
+
+        public async Task UpdateCarAsync(Car car)
+        {
+            _context.Update(car);
         }
     }
 }

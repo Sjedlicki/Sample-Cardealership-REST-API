@@ -32,5 +32,10 @@ namespace DotNetCoreMVCRestApi.Data
         {
             throw new NotImplementedException();
         }
+
+        public async Task UpdateCarAsync(Car car)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

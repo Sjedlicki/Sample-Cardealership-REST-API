@@ -23,7 +23,7 @@ namespace DotNetCoreMVCRestApi.Controllers
 
         // GET api/cars
         [HttpGet]
-        public async Task <ActionResult<List<CarReadDto>>> GetAllCarsAsync()
+        public async Task<ActionResult<List<CarReadDto>>> GetAllCarsAsync()
         {
             var cars = await _repository.GetAllCarsAsync();
 
@@ -36,8 +36,8 @@ namespace DotNetCoreMVCRestApi.Controllers
         }
 
         // GET api/cars/{id}
-        [HttpGet("{id}", Name = "GetCarById")]
-        public async Task <ActionResult<CarReadDto>> GetCarByIdAsync(int id)
+        [HttpGet("{id}", Name = "GetCarByIdAsync")]
+        public async Task<ActionResult<CarReadDto>> GetCarByIdAsync(int id)
         {
             var car = await _repository.GetCarByIdAsync(id);
 
@@ -62,7 +62,31 @@ namespace DotNetCoreMVCRestApi.Controllers
 
                 var carReadDto = _mapper.Map<CarReadDto>(carModel);
 
-                return CreatedAtRoute(nameof(GetCarByIdAsync), new { Id = carReadDto.Id } ,carReadDto);
+                return CreatedAtRoute(nameof(GetCarByIdAsync), new { Id = carReadDto.Id }, carReadDto);
+            }
+
+            return BadRequest();
+        }
+
+        // PUT api/cars/{id}
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateCarAsync(int id, [Bind("Make,Model,Year,Color,VIN")] CarUpdateDto carUpdateDto)
+        {
+            var carModelFromRepository = await _repository.GetCarByIdAsync(id);
+
+            if (carModelFromRepository == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _mapper.Map(carUpdateDto, carModelFromRepository);
+
+                await _repository.UpdateCarAsync(carModelFromRepository);
+                await _repository.SaveChangesAsync();
+
+                return NoContent();
             }
 
             return BadRequest();
