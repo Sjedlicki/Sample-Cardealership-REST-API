@@ -1,3 +1,4 @@
+using AutoMapper;
 using DotNetCoreMVCRestApi.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-
+using System;
 
 namespace DotNetCoreMVCRestApi
 {
@@ -26,6 +27,8 @@ namespace DotNetCoreMVCRestApi
             {
                 options.UseSqlServer(Configuration.GetConnectionString("CarDealershipConnection"));
             });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             // AddSingleton - Same for every request.
             // AddScoped - Created once per client request.

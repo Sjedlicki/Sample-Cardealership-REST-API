@@ -1,4 +1,5 @@
-﻿using DotNetCoreMVCRestApi.Data;
+﻿using AutoMapper;
+using DotNetCoreMVCRestApi.Data;
 using DotNetCoreMVCRestApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -9,12 +10,13 @@ namespace DotNetCoreMVCRestApi.Controllers
     [Route("api/cars")]
     public class CarsController : ControllerBase
     {
-       //private readonly MockCarRepository _repository = new MockCarRepository();
         private readonly ICarRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CarsController(ICarRepository repository)
+        public CarsController(ICarRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         // GET api/cars
