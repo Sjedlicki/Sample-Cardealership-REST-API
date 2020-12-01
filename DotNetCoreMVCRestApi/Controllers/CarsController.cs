@@ -22,11 +22,11 @@ namespace DotNetCoreMVCRestApi.Controllers
 
         // GET api/cars
         [HttpGet]
-        public ActionResult <List<CarReadDto>> GetAllCars()
+        public ActionResult<List<CarReadDto>> GetAllCars()
         {
             var cars = _repository.GetAllCars();
 
-            if(cars == null)
+            if (cars == null)
             {
                 return NotFound();
             }
@@ -35,17 +35,36 @@ namespace DotNetCoreMVCRestApi.Controllers
         }
 
         // GET api/cars/{id}
-        [HttpGet("{id}")]
-        public ActionResult <CarReadDto> GetCarById(int id)
+        [HttpGet("{id}", Name = "GetCarById")]
+        public ActionResult<CarReadDto> GetCarById(int id)
         {
             var car = _repository.GetCarById(id);
 
-            if(car ==  null)
+            if (car == null)
             {
                 return NotFound();
             }
 
             return Ok(_mapper.Map<CarReadDto>(car));
+        }
+
+        // POST api/cars
+        [HttpPost]
+        public ActionResult<CarReadDto> CreateCar([Bind("Make,Model,Year,Color,VIN")] CarCreateDto carCreateDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var carModel = _mapper.Map<Car>(carCreateDto);
+
+                _repository.CreateCar(carModel);
+                _repository.SaveChanges();
+
+                var carReadDto = _mapper.Map<CarReadDto>(carModel);
+
+                return CreatedAtRoute(nameof(GetCarById), new { Id = carReadDto.Id } ,carReadDto);
+            }
+
+            return BadRequest();
         }
     }
 }

@@ -8,6 +8,11 @@ namespace DotNetCoreMVCRestApi.Data
 {
     public class MockCarRepository : ICarRepository
     {
+        public void CreateCar(Car car)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Car> GetAllCars()
         {
             return new List<Car>
@@ -21,6 +26,11 @@ namespace DotNetCoreMVCRestApi.Data
         public Car GetCarById(int id)
         {
             return new Car() { Id = 1, Make = "Tesla", Model = "Cyber Truck", Year = "2021", Color = "Silver", VIN = "2B3CA3CV5AH250416" };
+        }
+
+        public bool SaveChanges()
+        {
+            throw new NotImplementedException();
         }
     }
 }

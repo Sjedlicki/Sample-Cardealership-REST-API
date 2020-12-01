@@ -8,7 +8,10 @@ namespace DotNetCoreMVCRestApi.Profiles
     {
         public CarsProfile()
         {
+
+            // Source -> Destination
             CreateMap<Car, CarReadDto>();
+            CreateMap<CarCreateDto, Car>();
         }
     }
 }
