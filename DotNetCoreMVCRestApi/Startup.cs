@@ -1,5 +1,7 @@
+using DotNetCoreMVCRestApi.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,8 +22,19 @@ namespace DotNetCoreMVCRestApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<CarContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("CarDealershipConnection"));
+            });
+
+            // AddSingleton - Same for every request.
+            // AddScoped - Created once per client request.
+            // AddTransient - New instance created every time.
+
+            services.AddScoped<ICarRepository, MockCarRepository>();
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DotNetCoreMVCRestApi", Version = "v1" });
