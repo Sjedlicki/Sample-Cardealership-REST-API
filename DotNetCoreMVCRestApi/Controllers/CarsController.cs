@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DotNetCoreMVCRestApi.Data;
 using DotNetCoreMVCRestApi.Models;
+using DotNetCoreMVCRestApi.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -21,30 +22,30 @@ namespace DotNetCoreMVCRestApi.Controllers
 
         // GET api/cars
         [HttpGet]
-        public ActionResult<List<Car>> GetAllCars()
+        public ActionResult <List<CarReadDto>> GetAllCars()
         {
-            var carItems = _repository.GetAllCars();
+            var cars = _repository.GetAllCars();
 
-            if(carItems == null)
+            if(cars == null)
             {
                 return NotFound();
             }
 
-            return Ok(carItems);
+            return Ok(_mapper.Map<List<CarReadDto>>(cars));
         }
 
         // GET api/cars/{id}
         [HttpGet("{id}")]
-        public ActionResult<List<Car>> GetCarById(int id)
+        public ActionResult <CarReadDto> GetCarById(int id)
         {
-            var carItems = _repository.GetCarById(id);
+            var car = _repository.GetCarById(id);
 
-            if(carItems ==  null)
+            if(car ==  null)
             {
                 return NotFound();
             }
 
-            return Ok(carItems);
+            return Ok(_mapper.Map<CarReadDto>(car));
         }
     }
 }
