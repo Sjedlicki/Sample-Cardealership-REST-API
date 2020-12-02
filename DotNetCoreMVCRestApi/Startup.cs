@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using Newtonsoft.Json.Serialization;
 
 namespace DotNetCoreMVCRestApi
 {
@@ -36,7 +37,10 @@ namespace DotNetCoreMVCRestApi
 
             services.AddScoped<ICarRepository, SqlCarRepository>();
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
 
             services.AddSwaggerGen(c =>
             {
