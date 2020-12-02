@@ -11,5 +11,6 @@ namespace DotNetCoreMVCRestApi.Data
         Task<List<Car>> GetAllCarsAsync(); // Read
         Task<Car> GetCarByIdAsync(int id); // Read
         Task UpdateCarAsync(Car car); // Update
+        Task DeleteCarAsync(Car car); // Delete
     }
 }

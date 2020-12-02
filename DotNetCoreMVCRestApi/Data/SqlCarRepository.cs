@@ -50,5 +50,17 @@ namespace DotNetCoreMVCRestApi.Data
         {
             _context.Update(car);
         }
+
+        public async Task DeleteCarAsync(Car car)
+        {
+            if(car == null)
+            {
+                throw new ArgumentNullException(nameof(car));
+            }
+
+            _context.Remove(car);
+
+            await SaveChangesAsync();
+        }
     }
 }

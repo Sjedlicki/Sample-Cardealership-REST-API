@@ -5,6 +5,7 @@ using DotNetCoreMVCRestApi.DataTransferObjects;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace DotNetCoreMVCRestApi.Controllers
 {
@@ -84,12 +85,58 @@ namespace DotNetCoreMVCRestApi.Controllers
                 _mapper.Map(carUpdateDto, carModelFromRepository);
 
                 await _repository.UpdateCarAsync(carModelFromRepository);
+
                 await _repository.SaveChangesAsync();
 
                 return NoContent();
             }
 
             return BadRequest();
+        }
+
+        // PATCH api/cars/{id}
+        [HttpPatch("{id}")]
+        public async Task <ActionResult> PartialCarUpdate(int id, JsonPatchDocument<CarUpdateDto> patchDocument)
+        {
+            var carModelFromRepository = await _repository.GetCarByIdAsync(id);
+
+            if (carModelFromRepository == null)
+            {
+                return NotFound();
+            }
+
+            var carToPatch = _mapper.Map<CarUpdateDto>(carModelFromRepository);
+
+            patchDocument.ApplyTo(carToPatch, ModelState);
+
+            if(TryValidateModel(carToPatch) == false)
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(carToPatch, carModelFromRepository);
+            
+            await _repository.UpdateCarAsync(carModelFromRepository);
+
+            await _repository.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        // DELETE api/cars/{id}
+        [HttpDelete("{id}")]
+        public async Task <ActionResult> DeleteCarAsync(int id)
+        {
+            var carModelFromRepository = await _repository.GetCarByIdAsync(id);
+
+            if(carModelFromRepository == null)
+            {
+                return NotFound();
+            }
+
+            await _repository.DeleteCarAsync(carModelFromRepository);
+
+            return NoContent();
         }
     }
 }

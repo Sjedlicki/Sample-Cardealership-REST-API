@@ -13,6 +13,11 @@ namespace DotNetCoreMVCRestApi.Data
             throw new NotImplementedException();
         }
 
+        public Task DeleteCarAsync(Car car)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task <List<Car>> GetAllCarsAsync()
         {
             return new List<Car>
